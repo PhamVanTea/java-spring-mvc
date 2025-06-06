@@ -6,35 +6,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 
- @Controller
- public class UserController {
-     //    //DI: dependency injection
+@Controller
+public class UserController {
+    // //DI: dependency injection
     private UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
-     @RequestMapping("/")
-     public String getHomePage() {
+
+    @RequestMapping("/")
+    public String getHomePage() {
         String test = this.userService.handleHello();
-         return "phamtra.html";
-     }
+        return "hello";
+    }
 }
 
-//@RestController
-//public class UserController {
+// @RestController
+// public class UserController {
 //
-//    //DI: dependency injection
-//    private UserService userService;
+// //DI: dependency injection
+// private UserService userService;
 //
-//    public UserController(UserService userService) {
-//        this.userService = userService;
-//    }
+// public UserController(UserService userService) {
+// this.userService = userService;
+// }
 //
-//    @GetMapping("")
-//    public String getHomePage() {
-//        return this.userService.handleHello();
-//    }
-//}
-
-
+// @GetMapping("")
+// public String getHomePage() {
+// return this.userService.handleHello();
+// }
+// }
