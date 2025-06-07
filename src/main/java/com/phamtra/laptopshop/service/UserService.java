@@ -4,6 +4,8 @@ import com.phamtra.laptopshop.domain.User;
 import com.phamtra.laptopshop.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -13,9 +15,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public String handleHello() {
-        return "hello from service";
+    public List<User> getAllUsers() {
+        return this.userRepository.findAll();
     }
+
+    public List<User> getAllUsersByEmail(String email) {
+        return this.userRepository.findByEmail(email);
+    }
+
     public User handleSaveUser(User user) {
         User phamtra = this.userRepository.save(user);
         System.out.println(phamtra);

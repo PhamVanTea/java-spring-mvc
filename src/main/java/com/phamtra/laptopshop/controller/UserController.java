@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+
 @Controller
 public class UserController {
 
@@ -22,8 +24,9 @@ public class UserController {
 
     @RequestMapping("/")
     public String getHomePage(Model model) {
-        String test = this.userService.handleHello();
-        model.addAttribute("phamtra", test);
+        List<User> arrUsers = this.userService.getAllUsersByEmail("buithicamnang.tvi5113@gmail.com");
+        System.out.println(arrUsers);
+        model.addAttribute("phamtra", "test");
         model.addAttribute("test", "from controller with model");
         return "hello";
     }
