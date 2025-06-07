@@ -39,7 +39,7 @@ public class UserController {
         return "admin/user/table-user";
     }
 
-    @RequestMapping("/admin/user/{id}")
+    @RequestMapping("/admin/user/show/{id}")
     public String getUserDetailPage(Model model, @PathVariable long id) { // @PathVariable long phamtra: lấy tham số
                                                                           // {phamtra}
         User user = this.userService.getUserById(id);
@@ -60,5 +60,12 @@ public class UserController {
     public String createUserPage(Model model, @ModelAttribute("newUser") User phamtra) {
         this.userService.handleSaveUser(phamtra);
         return "redirect:/admin/user";
+    }
+
+    // Hiển thị trang update người dùng.
+    @RequestMapping("/admin/user/update/{id}") // get
+    public String getUpdateUserPage(Model model) {
+        model.addAttribute("newUser", new User());
+        return "admin/user/update";
     }
 }
