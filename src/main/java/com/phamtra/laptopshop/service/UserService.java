@@ -25,7 +25,6 @@ public class UserService {
 
     public User handleSaveUser(User user) {
         User phamtra = this.userRepository.save(user);
-        System.out.println(phamtra);
         return phamtra;
     }
 }
