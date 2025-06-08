@@ -20,13 +20,13 @@
                             <h3>Update a user</h3>
                             <hr />
                             <form:form action="/admin/user/update" method="post" modelAttribute="newUser">
-                                <div class="mb-3">
+                                <div class="mb-3" style="display: none;">
                                     <label class="form-label">Id:</label>
                                     <form:input class="form-control" type="text" path="id" />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Email:</label>
-                                    <form:input class="form-control" type="email" path="email" />
+                                    <form:input class="form-control" type="email" path="email" disabled="true" />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Phone number:</label>

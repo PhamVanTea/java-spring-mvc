@@ -5,10 +5,7 @@ import com.phamtra.laptopshop.service.UserService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -64,8 +61,23 @@ public class UserController {
 
     // Hiển thị trang update người dùng.
     @RequestMapping("/admin/user/update/{id}") // get
-    public String getUpdateUserPage(Model model) {
-        model.addAttribute("newUser", new User());
+    public String getUpdateUserPage(Model model, @PathVariable long id) {
+        User currentUser = this.userService.getUserById(id);
+        model.addAttribute("newUser", currentUser);
         return "admin/user/update";
+    }
+
+    //khi dùng postmapping thì đường dẫn url ứng với method: post
+    @PostMapping("/admin/user/update") // get
+    public String postUpdateUserPage(Model model, @ModelAttribute("newUser") User phamtra) {
+        User currentUser = this.userService.getUserById(phamtra.getId());
+        if (currentUser != null) {
+            currentUser.setAddress(phamtra.getAddress());
+            currentUser.setFullName(phamtra.getFullName());
+            currentUser.setPhone(phamtra.getPhone());
+            //lưu xuống database
+            this.userService.handleSaveUser(phamtra);
+        }
+        return "redirect:/admin/user"; // khi nhấn nút update thì sẽ save và chuyển hướng đến trang /admin/user
     }
 }
