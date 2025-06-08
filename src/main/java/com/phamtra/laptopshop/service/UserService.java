@@ -27,10 +27,13 @@ public class UserService {
         return this.userRepository.findById(id);
     }
 
-
     public User handleSaveUser(User user) {
         User phamtra = this.userRepository.save(user);
         return phamtra;
+    }
+
+    public void deleteAUser(long id) {
+        this.userRepository.deleteById(id);
     }
 }
 

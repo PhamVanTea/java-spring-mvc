@@ -67,17 +67,33 @@ public class UserController {
         return "admin/user/update";
     }
 
-    //khi dùng postmapping thì đường dẫn url ứng với method: post
-    @PostMapping("/admin/user/update") // get
+    // khi dùng postmapping thì đường dẫn url ứng với method: post
+    @PostMapping("/admin/user/update") 
     public String postUpdateUserPage(Model model, @ModelAttribute("newUser") User phamtra) {
         User currentUser = this.userService.getUserById(phamtra.getId());
         if (currentUser != null) {
             currentUser.setAddress(phamtra.getAddress());
             currentUser.setFullName(phamtra.getFullName());
             currentUser.setPhone(phamtra.getPhone());
-            //lưu xuống database
-            this.userService.handleSaveUser(phamtra);
+            // lưu xuống database
+            this.userService.handleSaveUser(currentUser);
         }
         return "redirect:/admin/user"; // khi nhấn nút update thì sẽ save và chuyển hướng đến trang /admin/user
+    }
+
+    // Hiển thị trang delete người dùng. 
+    @GetMapping("/admin/user/delete/{id}") // get
+    public String getDeleteUserPage(Model model, @PathVariable long id) {
+        model.addAttribute("id", id);
+//        User user = new User();
+//        user.setId(id);
+        model.addAttribute("newUser", new User());
+        return "admin/user/delete";
+    }
+
+    @PostMapping("/admin/user/delete") // get
+    public String postDeleteUserPage(Model model, @ModelAttribute("newUser") User phamtra) {
+        this.userService.deleteAUser(phamtra.getId());
+        return "redirect:/admin/user";
     }
 }
