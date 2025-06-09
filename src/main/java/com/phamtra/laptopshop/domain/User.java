@@ -2,6 +2,8 @@ package com.phamtra.laptopshop.domain;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "users")
@@ -17,6 +19,16 @@ public class User {
     private String address;
     private String phone;
     private String avatar;
+
+    //roleId
+    //User many - one role
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    //user one - many orders
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 
     public long getId() {
         return id;

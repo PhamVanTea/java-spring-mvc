@@ -11,6 +11,12 @@ public class Order {
 
     private double totalPrice;
 
+    //user id
+    //many orders - one user
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public double getTotalPrice() {
         return totalPrice;
     }
