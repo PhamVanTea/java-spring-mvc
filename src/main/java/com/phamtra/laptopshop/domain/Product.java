@@ -2,6 +2,8 @@ package com.phamtra.laptopshop.domain;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "products")
 public class Product {
@@ -18,6 +20,10 @@ public class Product {
     private long sold;
     private String factory;
     private String target;
+
+    //product one - many orderDetails (ko nhất thiết code ngược lại cũng dc)
+//    @OneToMany(mappedBy = "product")
+//    private List<OrderDetail> orderDetails;
 
     public long getId() {
         return id;
