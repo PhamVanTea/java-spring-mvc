@@ -34,7 +34,7 @@
                                             <h3>Create a user</h3>
                                             <hr />
                                             <form:form action="/admin/user/create" method="post"
-                                                modelAttribute="newUser">
+                                                modelAttribute="newUser" enctype="multipart/form-data">
                                                 <div class="row g-3">
                                                     <div class="col-md-6">
                                                         <label class="form-label">Email:</label>
@@ -59,15 +59,15 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label class="form-label">Role:</label>
-                                                        <select name="" id="role" class="form-select">
-                                                            <option value="ADMIN" selected>ADMIN</option>
-                                                            <option value="USER" selected>USER</option>
-                                                        </select>
+                                                        <form:select id="role" class="form-select" path="role.name">
+                                                            <form:option value="ADMIN">ADMIN</form:option>
+                                                            <form:option value="USER">USER</form:option>
+                                                        </form:select>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="avatarFile" class="form-label">Avatar:</label>
                                                         <input type="file" class="form-control" id="avatarFile"
-                                                            accept=".png, .jpg, .jpeg">
+                                                            accept=".png, .jpg, .jpeg" name="phamtraFile" />
                                                     </div>
                                                     <div class="col-12 mb-3">
                                                         <img style="max-height: 250px; display: none;" src=""
@@ -87,7 +87,7 @@
                             <jsp:include page="../layout/footer.jsp" />
                         </footer>
                     </div>
-                </div> 
+                </div>
 
                 <script src="/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
                 <script src="/js/scripts.js"></script>

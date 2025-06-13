@@ -3,10 +3,16 @@ package com.phamtra.laptopshop.controller.admin;
 import com.phamtra.laptopshop.domain.User;
 import com.phamtra.laptopshop.service.UserService;
 
+import jakarta.servlet.ServletContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -14,9 +20,11 @@ public class UserController {
 
     // //DI: dependency injection
     private UserService userService;
+    private final ServletContext servletContext;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ServletContext servletContext) {
         this.userService = userService;
+        this.servletContext = servletContext;
     }
 
     // Hiển thị trang chủ với dữ liệu được truyền từ controller.
@@ -45,16 +53,42 @@ public class UserController {
     }
 
     // Hiển thị trang tạo mới người dùng.
-    @RequestMapping("/admin/user/create") // get
+    @GetMapping("/admin/user/create") // get
     public String getCreateUserPage(Model model) {
         model.addAttribute("newUser", new User());
         return "admin/user/create";
     }
 
     // khi nhấn nút create thì sẽ save và chuyển hướng đến trang /admin/user
-    @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
-    public String createUserPage(Model model, @ModelAttribute("newUser") User phamtra) {
-        this.userService.handleSaveUser(phamtra);
+    @PostMapping(value = "/admin/user/create")
+    public String createUserPage(Model model,
+            @ModelAttribute("newUser") User phamtra,
+            @RequestParam("phamtraFile") MultipartFile file // lấy file từ controller
+    ) {
+
+        try {
+            byte[] bytes = file.getBytes();
+
+            String rootPath = this.servletContext.getRealPath("/resources/images");
+
+            File dir = new File(rootPath + File.separator + "avatar");
+            if (!dir.exists())
+                dir.mkdirs();
+
+            // Create the file on server
+            File serverFile = new File(dir.getAbsolutePath() + File.separator +
+                    +System.currentTimeMillis() + "-" + file.getOriginalFilename());
+
+            BufferedOutputStream stream = new BufferedOutputStream(
+                    new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // this.userService.handleSaveUser(phamtra);
         return "redirect:/admin/user";
     }
 
@@ -95,4 +129,5 @@ public class UserController {
         this.userService.deleteAUser(phamtra.getId());
         return "redirect:/admin/user";
     }
+
 }
