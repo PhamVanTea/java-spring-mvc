@@ -24,18 +24,25 @@
                             <div class="container mt-5">
                                 <div class="row">
                                     <div class="col-12 mx-auto">
-                                        <h3>Delete the user with id = ${id}</h3>
-                                        <hr />
-                                        <div class="alert alert-danger">
-                                            Are you sure to delete this user ?
+                                        <div class="d-flex justify-content-between">
+                                            <h3>User detail with id = ${id}</h3>
                                         </div>
-                                        <form:form action="/admin/user/delete" modelAttribute="newUser" method="post">
-                                            <div class="mb-3" style="display: none;">
-                                                <label class="form-label">Id:</label>
-                                                <form:input value="${id}" class="form-control" type="text" path="id" />
+
+                                        <hr />
+
+                                        <div class="card" style="width: 60%;">
+                                            <div class="card-header">
+                                                User information
                                             </div>
-                                            <button class="btn btn-danger">Confirm</button>
-                                        </form:form>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">ID: ${user.id}</li>
+                                                <li class="list-group-item">Email: ${user.email}</li>
+                                                <li class="list-group-item">FullName: ${user.fullName}</li>
+                                                <li class="list-group-item">Address: ${user.address}</li>
+                                            </ul>
+                                        </div>
+                                        <a href="/admin/user" class="btn btn-success mt-3">Back</a>
+
                                     </div>
                                 </div>
                             </div>
