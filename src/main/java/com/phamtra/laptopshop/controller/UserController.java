@@ -68,7 +68,7 @@ public class UserController {
     }
 
     // khi dùng postmapping thì đường dẫn url ứng với method: post
-    @PostMapping("/admin/user/update") 
+    @PostMapping("/admin/user/update")
     public String postUpdateUserPage(Model model, @ModelAttribute("newUser") User phamtra) {
         User currentUser = this.userService.getUserById(phamtra.getId());
         if (currentUser != null) {
@@ -81,12 +81,12 @@ public class UserController {
         return "redirect:/admin/user"; // khi nhấn nút update thì sẽ save và chuyển hướng đến trang /admin/user
     }
 
-    // Hiển thị trang delete người dùng. 
+    // Hiển thị trang delete người dùng.
     @GetMapping("/admin/user/delete/{id}") // get
     public String getDeleteUserPage(Model model, @PathVariable long id) {
         model.addAttribute("id", id);
-//        User user = new User();
-//        user.setId(id);
+        // User user = new User();
+        // user.setId(id);
         model.addAttribute("newUser", new User());
         return "admin/user/delete";
     }

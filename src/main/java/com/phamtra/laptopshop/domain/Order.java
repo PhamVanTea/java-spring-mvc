@@ -19,7 +19,7 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    //order one - many orderDetails
+    //one order has many orderDetails
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails; //ok
 
