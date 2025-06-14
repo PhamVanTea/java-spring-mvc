@@ -1,6 +1,8 @@
 package com.phamtra.laptopshop.service;
 
+import com.phamtra.laptopshop.domain.Role;
 import com.phamtra.laptopshop.domain.User;
+import com.phamtra.laptopshop.repository.RoleRepository;
 import com.phamtra.laptopshop.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +12,11 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public List<User> getAllUsers() {
@@ -34,6 +38,10 @@ public class UserService {
 
     public void deleteAUser(long id) {
         this.userRepository.deleteById(id);
+    }
+
+    public Role getRoleByName(String name) {
+        return this.roleRepository.findByName(name);
     }
 }
 

@@ -1,30 +1,32 @@
 package com.phamtra.laptopshop.controller.admin;
 
 import com.phamtra.laptopshop.domain.User;
+import com.phamtra.laptopshop.service.UploadService;
 import com.phamtra.laptopshop.service.UserService;
 
 import jakarta.servlet.ServletContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
 public class UserController {
 
     // //DI: dependency injection
-    private UserService userService;
-    private final ServletContext servletContext;
+    private final UserService userService;
+    private final UploadService uploadService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, ServletContext servletContext) {
+    public UserController(UploadService uploadService, UserService userService, ServletContext servletContext,
+                          PasswordEncoder passwordEncoder) {
         this.userService = userService;
-        this.servletContext = servletContext;
+        this.uploadService = uploadService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // Hiển thị trang chủ với dữ liệu được truyền từ controller.
@@ -65,30 +67,15 @@ public class UserController {
             @ModelAttribute("newUser") User phamtra,
             @RequestParam("phamtraFile") MultipartFile file // lấy file từ controller
     ) {
+        String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+        String hashPassword = this.passwordEncoder.encode(phamtra.getPassword());
 
-        try {
-            byte[] bytes = file.getBytes();
+        phamtra.setAvatar(avatar);
+        phamtra.setPassword(hashPassword);
+        phamtra.setRole(this.userService.getRoleByName(phamtra.getRole().getName()));
+        //save
 
-            String rootPath = this.servletContext.getRealPath("/resources/images");
-
-            File dir = new File(rootPath + File.separator + "avatar");
-            if (!dir.exists())
-                dir.mkdirs();
-
-            // Create the file on server
-            File serverFile = new File(dir.getAbsolutePath() + File.separator +
-                    +System.currentTimeMillis() + "-" + file.getOriginalFilename());
-
-            BufferedOutputStream stream = new BufferedOutputStream(
-                    new FileOutputStream(serverFile));
-            stream.write(bytes);
-            stream.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        // this.userService.handleSaveUser(phamtra);
+        this.userService.handleSaveUser(phamtra);
         return "redirect:/admin/user";
     }
 
@@ -129,5 +116,4 @@ public class UserController {
         this.userService.deleteAUser(phamtra.getId());
         return "redirect:/admin/user";
     }
-
 }
