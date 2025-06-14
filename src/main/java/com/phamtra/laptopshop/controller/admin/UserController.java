@@ -4,8 +4,6 @@ import com.phamtra.laptopshop.domain.User;
 import com.phamtra.laptopshop.service.UploadService;
 import com.phamtra.laptopshop.service.UserService;
 
-import jakarta.servlet.ServletContext;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +20,7 @@ public class UserController {
     private final UploadService uploadService;
     private final PasswordEncoder passwordEncoder;
 
-    public UserController(UploadService uploadService, UserService userService, ServletContext servletContext,
+    public UserController(UploadService uploadService, UserService userService,
                           PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.uploadService = uploadService;
