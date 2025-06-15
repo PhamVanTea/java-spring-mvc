@@ -26,17 +26,55 @@
                                 <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Products</li>
                             </ol>
-                            <div>product</div>
-                        </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h3>Table Products</h3>
+                                <a href="/admin/product/create" class="btn btn-primary">Create a product</a>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Factory</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="product" items="${product1}">
+                                            <tr>
+                                                <td>${product.id}</td>
+                                                <td>${product.email}</td>
+                                                <td>${product.fullName}</td>
+                                                <td>${product.role.name}</td>
+                                                <td>
+                                                    <a href="/admin/product/show/${product.id}"
+                                                        class="btn btn-sm btn-success">View</a>
+                                                    <a href="/admin/product/update/${product.id}"
+                                                        class="btn btn-sm btn-warning">Update</a>
+                                                    <a href="/admin/product/delete/${product.id}"
+                                                        class="btn btn-sm btn-danger">Delete</a>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> <!-- Đóng container-fluid -->
                     </main>
-                    <footer>
+
+                    <footer class="bg-light mt-auto">
                         <jsp:include page="../layout/footer.jsp" />
                     </footer>
-                </div>
-            </div>
-            </div>
+                </div> <!-- Đóng layoutSidenav_content -->
+            </div> <!-- Đóng layoutSidenav -->
+
             <script src="/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
             <script src="/js/scripts.js"></script>
         </body>
+
 
         </html>
