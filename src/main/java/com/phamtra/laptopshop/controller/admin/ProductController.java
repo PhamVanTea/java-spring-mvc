@@ -1,14 +1,16 @@
 package com.phamtra.laptopshop.controller.admin;
 
 import com.phamtra.laptopshop.domain.Product;
+import com.phamtra.laptopshop.domain.User;
 import com.phamtra.laptopshop.service.ProductService;
+import com.phamtra.laptopshop.service.UploadService;
+import jakarta.validation.Valid;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -17,9 +19,13 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final UploadService uploadService;
+    private final PasswordEncoder passwordEncoder;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, UploadService uploadService, PasswordEncoder passwordEncoder) {
         this.productService = productService;
+        this.uploadService = uploadService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/admin/product")
@@ -36,13 +42,25 @@ public class ProductController {
     }
 
     @PostMapping(value = "/admin/product/create")
-    public String handleCreateProduct(@ModelAttribute("newProduct") Product pr, BindingResult newProductBindingResult, @RequestParam("phamtraFile")MultipartFile file) {
+    public String handleCreateProduct(@ModelAttribute("newProduct") @Valid Product pr,
+                                      BindingResult newProductBindingResult,
+                                      @RequestParam("phamtraFile")MultipartFile file) {
+
+        if (newProductBindingResult.hasErrors()) {
+            return "/admin/product/create";
+        }
+        //upload image
+        String image = this.uploadService.handleSaveUploadFile(file, "product");
+        pr.setImage(image);
         this.productService.handleSaveProduct(pr);
         return "redirect:/admin/product";
     }
 
-    @GetMapping("/admin/product/detail")
-    public String getDetailProductPage(Model model) {
+    @GetMapping("/admin/product/{id}")
+    public String getDetailProductPage(Model model, @PathVariable long id) {
+        Product pr = this.productService.fetchProductById(id).get();
+        model.addAttribute("product", pr);
+        model.addAttribute("id", id);
         return "/admin/product/detail";
     }
 

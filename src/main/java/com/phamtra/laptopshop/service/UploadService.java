@@ -31,7 +31,7 @@ public class UploadService {
 
             String a = this.servletContext.getRealPath("");
 
-            File dir = new File(rootPath + File.separator + "targetFolder");
+            File dir = new File(rootPath + File.separator + targetFolder);
             if (!dir.exists())
                 dir.mkdirs();
 
@@ -47,6 +47,6 @@ public class UploadService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return rootPath;
+        return finalName;
     }
 }

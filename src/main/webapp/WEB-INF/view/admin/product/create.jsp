@@ -35,28 +35,56 @@
                                             <hr />
                                             <form:form action="/admin/product/create" method="post"
                                                 modelAttribute="newProduct" enctype="multipart/form-data">
+                                                <c:set var="errorName">
+                                                    <form:errors path="name" cssClass="invalid-feedback" />
+                                                </c:set>
+                                                <c:set var="errorPrice">
+                                                    <form:errors path="price" cssClass="invalid-feedback" />
+                                                </c:set>
+                                                <c:set var="errorDetailDesc">
+                                                    <form:errors path="detailDesc" cssClass="invalid-feedback" />
+                                                </c:set>
+                                                <c:set var="errorShortDesc">
+                                                    <form:errors path="shortDesc" cssClass="invalid-feedback" />
+                                                </c:set>
+                                                <c:set var="errorQuantity">
+                                                    <form:errors path="quantity" cssClass="invalid-feedback" />
+                                                </c:set>
                                                 <div class="row g-3">
                                                     <div class="col-md-6">
                                                         <label class="form-label">Name:</label>
-                                                        <form:input class="form-control" type="text" path="name" />
+                                                        <form:input
+                                                            class="form-control ${not empty errorName ? 'is-invalid' : ''}"
+                                                            type="text" path="name" />
+                                                        ${errorName}
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label class="form-label">Price:</label>
-                                                        <form:input class="form-control" type="text" path="price" />
+                                                        <form:input
+                                                            class="form-control ${not empty errorPrice ? 'is-invalid' : ''}"
+                                                            type="text" path="price" />
+                                                        ${errorPrice}
                                                     </div>
                                                     <div class="col-md-12">
                                                         <label class="form-label">Details description:</label>
-                                                        <form:textarea class="form-control" type="text"
-                                                            path="detailDesc" />
+                                                        <form:textarea
+                                                            class="form-control ${not empty errorDetailDesc ? 'is-invalid' : ''}"
+                                                            type="text" path="detailDesc" />
+                                                        ${errorDetailDesc}
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label class="form-label">Short description:</label>
-                                                        <form:input class="form-control" type="text" path="shortDesc" />
+                                                        <form:input
+                                                            class="form-control ${not empty errorShortDesc ? 'is-invalid' : ''}"
+                                                            type="text" path="shortDesc" />
+                                                        ${errorShortDesc}
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label class="form-label">Quantity:</label>
-                                                        <form:input class="form-control" type="number"
-                                                            path="quantity" />
+                                                        <form:input
+                                                            class="form-control ${not empty errorQuantity ? 'is-invalid' : ''}"
+                                                            type="number" path="quantity" />
+                                                        ${errorQuantity}
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label class="form-label">Factory:</label>
