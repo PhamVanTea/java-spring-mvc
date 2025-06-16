@@ -44,12 +44,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="product" items="${product1}">
+                                        <c:forEach var="product" items="${products}">
                                             <tr>
                                                 <td>${product.id}</td>
-                                                <td>${product.email}</td>
-                                                <td>${product.fullName}</td>
-                                                <td>${product.role.name}</td>
+                                                <td>${product.name}</td>
+                                                <td>${product.price}</td>
+                                                <td>${product.factory}</td>
                                                 <td>
                                                     <a href="/admin/product/show/${product.id}"
                                                         class="btn btn-sm btn-success">View</a>

@@ -4,9 +4,12 @@ import com.phamtra.laptopshop.domain.User;
 import com.phamtra.laptopshop.service.UploadService;
 import com.phamtra.laptopshop.service.UserService;
 
+import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -62,9 +65,19 @@ public class UserController {
     // khi nhấn nút create thì sẽ save và chuyển hướng đến trang /admin/user
     @PostMapping(value = "/admin/user/create")
     public String createUserPage(Model model,
-            @ModelAttribute("newUser") User phamtra,
-            @RequestParam("phamtraFile") MultipartFile file // lấy file từ controller
+                                 @ModelAttribute("newUser") @Valid User phamtra,
+                                 BindingResult newUserbindingResult,
+                                 @RequestParam("phamtraFile") MultipartFile file // lấy file từ controller
     ) {
+        List<FieldError> errors = newUserbindingResult.getFieldErrors();
+        for (FieldError error : errors) {
+            System.out.println(">>>>>>" + error.getField() + " - " + error.getDefaultMessage());
+        }
+        //validate
+        if (newUserbindingResult.hasErrors()) {
+            return "/admin/user/create";
+        }
+        //
         String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
         String hashPassword = this.passwordEncoder.encode(phamtra.getPassword());
 

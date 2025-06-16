@@ -33,7 +33,7 @@
                                         <div class="col-md-6 col-12 mx-auto">
                                             <h3>Create a product</h3>
                                             <hr />
-                                            <form:form action="/admin/user/create" method="post"
+                                            <form:form action="/admin/product/create" method="post"
                                                 modelAttribute="newProduct" enctype="multipart/form-data">
                                                 <div class="row g-3">
                                                     <div class="col-md-6">

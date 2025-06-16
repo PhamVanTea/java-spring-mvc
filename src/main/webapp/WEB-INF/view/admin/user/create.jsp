@@ -37,13 +37,24 @@
                                                 modelAttribute="newUser" enctype="multipart/form-data">
                                                 <div class="row g-3">
                                                     <div class="col-md-6">
+                                                        <c:set var="errorEmail">
+                                                            <form:errors path="email" cssClass="invalid-feedback" />
+                                                        </c:set>
                                                         <label class="form-label">Email:</label>
-                                                        <form:input class="form-control" type="email" path="email" />
+                                                        <form:input
+                                                            class="form-control ${not empty errorEmail ? 'is-invalid' : ''}"
+                                                            type="email" path="email" />
+                                                        ${errorEmail}
                                                     </div>
                                                     <div class="col-md-6">
+                                                        <c:set var="errorPassword">
+                                                            <form:errors path="password" cssClass="invalid-feedback" />
+                                                        </c:set>
                                                         <label class="form-label">Password:</label>
-                                                        <form:input class="form-control" type="password"
-                                                            path="password" />
+                                                        <form:input
+                                                            class="form-control ${not empty errorPassword ? 'is-invalid' : ''}"
+                                                            type="password" path="password" />
+                                                        ${errorPassword}
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label class="form-label">Phone number:</label>
