@@ -23,32 +23,19 @@
                         <main>
                             <div class="container mt-5">
                                 <div class="row">
-                                    <div class="col-md-6 col-12 mx-auto">
-                                        <h3>Update a user</h3>
+                                    <div class="col-12 mx-auto">
+                                        <h3>Delete the product with id = ${id}</h3>
                                         <hr />
-                                        <form:form action="/admin/user/update" method="post" modelAttribute="newUser" >
+                                        <div class="alert alert-danger">
+                                            Are you sure to delete this product ?
+                                        </div>
+                                        <form:form action="/admin/product/delete" modelAttribute="newProduct"
+                                            method="post">
                                             <div class="mb-3" style="display: none;">
                                                 <label class="form-label">Id:</label>
-                                                <form:input class="form-control" type="text" path="id" />
+                                                <form:input value="${id}" class="form-control" type="text" path="id" />
                                             </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Email:</label>
-                                                <form:input class="form-control" type="email" path="email"
-                                                    disabled="true" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Phone number:</label>
-                                                <form:input class="form-control" type="tel" path="phone" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Full Name:</label>
-                                                <form:input class="form-control" type="text" path="fullName" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Address:</label>
-                                                <form:input class="form-control" type="text" path="address" />
-                                            </div>
-                                            <button type="submit" class="btn btn-warning">Update</button>
+                                            <button class="btn btn-danger">Confirm</button>
                                         </form:form>
                                     </div>
                                 </div>

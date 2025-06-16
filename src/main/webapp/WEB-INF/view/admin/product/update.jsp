@@ -24,29 +24,98 @@
                             <div class="container mt-5">
                                 <div class="row">
                                     <div class="col-md-6 col-12 mx-auto">
-                                        <h3>Update a user</h3>
+                                        <h3>Update a product</h3>
                                         <hr />
-                                        <form:form action="/admin/user/update" method="post" modelAttribute="newUser">
-                                            <div class="mb-3" style="display: none;">
-                                                <label class="form-label">Id:</label>
-                                                <form:input class="form-control" type="text" path="id" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Email:</label>
-                                                <form:input class="form-control" type="email" path="email"
-                                                    disabled="true" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Phone number:</label>
-                                                <form:input class="form-control" type="tel" path="phone" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Full Name:</label>
-                                                <form:input class="form-control" type="text" path="fullName" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Address:</label>
-                                                <form:input class="form-control" type="text" path="address" />
+                                        <form:form action="/admin/product/update" method="post"
+                                            modelAttribute="newProduct" enctype="multipart/form-data">
+                                            <c:set var="errorName">
+                                                <form:errors path="name" cssClass="invalid-feedback" />
+                                            </c:set>
+                                            <c:set var="errorPrice">
+                                                <form:errors path="price" cssClass="invalid-feedback" />
+                                            </c:set>
+                                            <c:set var="errorDetailDesc">
+                                                <form:errors path="detailDesc" cssClass="invalid-feedback" />
+                                            </c:set>
+                                            <c:set var="errorShortDesc">
+                                                <form:errors path="shortDesc" cssClass="invalid-feedback" />
+                                            </c:set>
+                                            <c:set var="errorQuantity">
+                                                <form:errors path="quantity" cssClass="invalid-feedback" />
+                                            </c:set>
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Name:</label>
+                                                    <form:input
+                                                        class="form-control ${not empty errorName ? 'is-invalid' : ''}"
+                                                        type="text" path="name" />
+                                                    ${errorName}
+                                                </div>
+                                                <form:input path="id" type="hidden" />
+
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Price:</label>
+                                                    <form:input
+                                                        class="form-control ${not empty errorPrice ? 'is-invalid' : ''}"
+                                                        type="text" path="price" />
+                                                    ${errorPrice}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label class="form-label">Details description:</label>
+                                                    <form:textarea
+                                                        class="form-control ${not empty errorDetailDesc ? 'is-invalid' : ''}"
+                                                        type="text" path="detailDesc" />
+                                                    ${errorDetailDesc}
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Short description:</label>
+                                                    <form:input
+                                                        class="form-control ${not empty errorShortDesc ? 'is-invalid' : ''}"
+                                                        type="text" path="shortDesc" />
+                                                    ${errorShortDesc}
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Quantity:</label>
+                                                    <form:input
+                                                        class="form-control ${not empty errorQuantity ? 'is-invalid' : ''}"
+                                                        type="number" path="quantity" />
+                                                    ${errorQuantity}
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Factory:</label>
+                                                    <form:select class="form-select" path="factory">
+                                                        <form:option value="APPLE">Apple (Macbook)</form:option>
+                                                        <form:option value="ASUS">Asus</form:option>
+                                                        <form:option value="LENOVO">Lenovo</form:option>
+                                                        <form:option value="DELL">Dell</form:option>
+                                                        <form:option value="LG">LG</form:option>
+                                                        <form:option value="ACER">Acer</form:option>
+                                                    </form:select>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Target:</label>
+                                                    <form:select class="form-select" path="target">
+                                                        <form:option value="GAMING">Gaming</form:option>
+                                                        <form:option value="SINHVIEN-VANPHONG">Sinh viên - Văn phòng
+                                                        </form:option>
+                                                        <form:option value="THIET-KE-DO-HOA">Thiết kế đồ họa
+                                                        </form:option>
+                                                        <form:option value="MONG-NHE">Mỏng nhẹ
+                                                        </form:option>
+                                                        <form:option value="DOANH-NHAN">Doanh Nhân
+                                                        </form:option>
+                                                    </form:select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="avatarFile" class="form-label">Image:</label>
+                                                    <input type="file" class="form-control" id="avatarFile"
+                                                        accept=".png, .jpg, .jpeg" name="phamtraFile" />
+                                                </div>
+                                                <div class="col-12 mb-3">
+                                                    <img style="max-height: 250px; display: none;" alt="avatar preview"
+                                                        id="avatarPreview">
+                                                </div>
                                             </div>
                                             <button type="submit" class="btn btn-warning">Update</button>
                                         </form:form>
@@ -62,7 +131,26 @@
                 </div>
 
                 <script src="/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+                <script src="/js/jquery-3.7.1.min.js"></script>
                 <script src="/js/scripts.js"></script>
+
+                <script>
+                    $(document).ready(() => {
+                        const avatarFile = $('#avatarFile');
+                        const orgImage = "$(newProduct.image)";
+                        if (orgImage) {
+                            const urlImage = "/images/product/" + orgImage;
+                            $('#avatarPreview').attr("src", urlImage);
+                            $('#avatarPreview').css({ "display": "none" });
+                        }
+
+                        avatarFile.change(function (e) {
+                            const imgURL = URL.createObjectURL(e.target.files[0]);
+                            $('#avatarPreview').attr("src", imgURL);
+                            $('#avatarPreview').css({ "display": "block" });
+                        });
+                    });
+                </script>
             </body>
 
             </html>
