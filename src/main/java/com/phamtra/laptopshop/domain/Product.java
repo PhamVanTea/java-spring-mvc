@@ -23,8 +23,9 @@ public class Product {
 
     @NotNull
     @NotEmpty(message = "detailDesc không được để trống")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String detailDesc;
-
+    
     @NotNull
     @NotEmpty(message = "shortDesc không được để trống")
     private String shortDesc;
