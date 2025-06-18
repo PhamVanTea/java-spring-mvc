@@ -27,8 +27,7 @@ public class User {
     @NotNull
     @Size(min = 3, message = "Fullname phải có tối thiểu 3 kí tự")
     private String fullName;
-    
-    @NotNull
+
     private String address;
     private String phone;
     private String avatar;
