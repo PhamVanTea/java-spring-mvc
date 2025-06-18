@@ -1,5 +1,9 @@
 package com.phamtra.laptopshop.domain.dto;
 
+
+import com.phamtra.laptopshop.service.validator.RegisterChecked;
+
+@RegisterChecked
 public class RegisterDTO {
     private String firstName;
     private String lastName;
