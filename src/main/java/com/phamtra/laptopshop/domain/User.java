@@ -43,6 +43,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+
     public Role getRole() {
         return role;
     }
@@ -85,6 +88,14 @@ public class User {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public void setFullName(String fullName) {
