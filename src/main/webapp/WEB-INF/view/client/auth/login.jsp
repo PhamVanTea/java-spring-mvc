@@ -26,7 +26,10 @@
                                 <div class="card-body">
                                     <form method="post" action="/login">
                                         <c:if test="${param.error != null}">
-                                            <div class="my-2" style="color: red;">Invalid email or password.</div>
+                                            <div class="my-2" style="color: red;"></div>
+                                        </c:if>
+                                        <c:if test="${param.logout != null}">
+                                            <div class="my-2" style="color: green;"></div>
                                         </c:if>
 
                                         <div class="form-floating mb-3">
@@ -39,6 +42,11 @@
                                                 name="password" />
                                             <label>Password</label>
                                         </div>
+                                        <!-- Thông báo lỗi để jQuery hiển thị -->
+                                        <div id="errorMsg" class="my-2" style="color: red; display: none;">Invalid email
+                                            or password.</div>
+                                        <div id="logoutMsg" class="my-2" style="color: green; display: none;">Logout
+                                            success.</div>
                                         <!-- gán token -->
                                         <div>
                                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -73,6 +81,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="/js/scripts.js"></script>
+    <script src="/js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('error')) {
+                $('#errorMsg').show();
+            }
+            if (urlParams.has('logout')) {
+                $('#logoutMsg').show();
+            }
+        });
+    </script>
 </body>
 
 </html>
