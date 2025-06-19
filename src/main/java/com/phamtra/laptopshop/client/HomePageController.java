@@ -5,7 +5,10 @@ import com.phamtra.laptopshop.domain.User;
 import com.phamtra.laptopshop.domain.dto.RegisterDTO;
 import com.phamtra.laptopshop.service.ProductService;
 import com.phamtra.laptopshop.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.util.List;
 
@@ -31,9 +34,12 @@ public class HomePageController {
     }
 
     @GetMapping("/")
-    public String getHomePage(Model model) {
+    public String getHomePage(Model model, HttpServletRequest request) {
         List<Product> products = this.productService.fetchProducts();
         model.addAttribute("products", products);
+
+        HttpSession session = request.getSession(false);
+        
         return "client/homepage/show";
     }
 
