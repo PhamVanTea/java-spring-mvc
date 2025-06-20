@@ -83,7 +83,6 @@ public class ProductService {
                     //update cart (sum)
                     int s = cart.getSum() + 1;
                     cart.setSum(s);
-                    cart.setSum(cart.getSum() + 1);
                     this.cartRepository.save(cart);
                     session.setAttribute("sum",s);
                 } else {
@@ -93,5 +92,9 @@ public class ProductService {
 
             }
         }
+    }
+
+    public Cart fetchByUser(User user) {
+        return this.cartRepository.findByUser(user);
     }
 }
