@@ -13,6 +13,46 @@ public class Order {
 
     private double totalPrice;
 
+    private String receiverName;
+
+    private String receiverAddress;
+
+    private String receiverPhone;
+
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getReceiverPhone() {
+        return receiverPhone;
+    }
+
+    public void setReceiverPhone(String receiverPhone) {
+        this.receiverPhone = receiverPhone;
+    }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
     //user id
     //many orders - one user
     @ManyToOne
@@ -22,6 +62,7 @@ public class Order {
     //one order has many orderDetails
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails; //ok
+
 
     public double getTotalPrice() {
         return totalPrice;
