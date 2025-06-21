@@ -37,7 +37,7 @@ git clone https://github.com/PhamVanTea/java-spring-mvc.git
 
 cd java-spring-mvc
 
-4. Cấu hình cơ sở dữ liệu
+2. Cấu hình cơ sở dữ liệu
    
 Mở file src/main/resources/application.properties.
 
@@ -51,7 +51,7 @@ spring.datasource.password=mat_khau
 
 spring.jpa.hibernate.ddl-auto=update
 
-6. Build và chạy dự án
+3. Build và chạy dự án
    
 Sử dụng Maven để build dự án:
 
@@ -61,7 +61,7 @@ Chạy ứng dụng:
 
 mvn spring-boot:run
 
-8. Truy cập ứng dụng
+4. Truy cập ứng dụng
    
 Mở trình duyệt và truy cập: http://localhost:8080.
 
