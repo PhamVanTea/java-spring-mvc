@@ -2,8 +2,11 @@ Java Spring MVC Application
 Đây là một dự án ứng dụng web được xây dựng bằng Java và Spring MVC, sử dụng JSP để làm giao diện. Dự án này được thiết kế theo mô hình MVC (Model-View-Controller), giúp tổ chức mã nguồn rõ ràng và dễ mở rộng.
 
 🛠️ Công nghệ sử dụng
-FrontEnd: HTML/CSS, JavaScript, Bootstrap, jQuery, JSTL,
+
+FrontEnd: HTML/CSS, JavaScript, Bootstrap, jQuery, JSTL
+
 BackEnd: Spring MVC, Spring Data JPA, Spring Security, Hibernate, Maven 
+
 SQL: MySQL 
     
 🌟 Các tính năng chính
