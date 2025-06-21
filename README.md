@@ -5,7 +5,7 @@ Java Spring MVC Application
 
 FrontEnd: HTML/CSS, JavaScript, Bootstrap, jQuery, JSTL
 
-BackEnd: Spring MVC, Spring Data JPA, Spring Security, Hibernate, Maven 
+BackEnd: SpringBoot, Spring MVC, Spring Data JPA, Spring Security, Hibernate, Maven 
 
 SQL: MySQL 
     
