@@ -5,23 +5,6 @@ Java Spring MVC Application
 FrontEnd: HTML/CSS, JavaScript, Bootstrap, jQuery, JSTL,
 BackEnd: Spring MVC, Spring Data JPA, Spring Security, Hibernate, Maven 
 SQL: MySQL 
-
-⚙️ Cấu trúc dự án
-src/main
-├── java
-│   └── com.example.project
-│       ├── controller       # Xử lý yêu cầu HTTP
-│       ├── model            # Các lớp đại diện dữ liệu (Entity)
-│       ├── repository       # Tầng truy cập cơ sở dữ liệu
-│       ├── service          # Xử lý logic nghiệp vụ
-│       └── exception        # Xử lý ngoại lệ
-├── resources
-│   ├── application.properties # File cấu hình ứng dụng
-│   └── static                # Tài nguyên tĩnh (CSS, JS, hình ảnh)
-└── webapp
-    ├── WEB-INF
-    │   └── views             # File JSP (giao diện)
-    └── index.jsp             # Trang chủ
     
 🌟 Các tính năng chính
 Quản lý sản phẩm:
