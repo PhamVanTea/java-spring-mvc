@@ -39,9 +39,9 @@
                                             <tr>
                                                 <th scope="col">ID</th>
                                                 <th scope="col">Email</th>
-                                                <th scope="col">Full Name</th>
-                                                <th scope="col">Role</th>
-                                                <th scope="col">Action</th>
+                                                <th scope="col">Họ và Tên</th>
+                                                <th scope="col">Chức vụ</th>
+                                                <th scope="col">Hành động</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -53,11 +53,11 @@
                                                     <td>${user.role.name}</td>
                                                     <td>
                                                         <a href="/admin/user/show/${user.id}"
-                                                            class="btn btn-sm btn-success">View</a>
+                                                            class="btn btn-sm btn-success">Xem</a>
                                                         <a href="/admin/user/update/${user.id}"
-                                                            class="btn btn-sm btn-warning">Update</a>
+                                                            class="btn btn-sm btn-warning">Cập nhật</a>
                                                         <a href="/admin/user/delete/${user.id}"
-                                                            class="btn btn-sm btn-danger">Delete</a>
+                                                            class="btn btn-sm btn-danger">Xóa</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

@@ -21,6 +21,22 @@ public class Order {
 
     private String status;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -53,16 +69,15 @@ public class Order {
         this.receiverName = receiverName;
     }
 
-    //user id
-    //many orders - one user
+    // user id
+    // many orders - one user
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    //one order has many orderDetails
-    @OneToMany(mappedBy = "order")
-    private List<OrderDetail> orderDetails; //ok
-
+    // one order has many orderDetails
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderDetail> orderDetails; // ok
 
     public double getTotalPrice() {
         return totalPrice;
@@ -87,4 +102,5 @@ public class Order {
                 ", totalPrice=" + totalPrice +
                 '}';
     }
+
 }
