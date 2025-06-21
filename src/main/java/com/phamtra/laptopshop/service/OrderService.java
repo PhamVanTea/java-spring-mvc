@@ -49,4 +49,8 @@ public class OrderService {
             this.orderRepository.save(currenOrder);
         }
     }
+
+    public void fetchOrderByUser() {
+
+    }
 }

@@ -53,6 +53,8 @@
                                                 </div>
                                                 <form:input path="id" type="hidden" />
 
+
+
                                                 <div class="col-md-6">
                                                     <label class="form-label">Price:</label>
                                                     <form:input

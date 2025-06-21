@@ -7,12 +7,14 @@ import com.phamtra.laptopshop.domain.User;
 import com.phamtra.laptopshop.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.hibernate.query.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ItemController {
@@ -123,6 +125,18 @@ public class ItemController {
 
     }
 
-
+    @GetMapping("/product")
+    public String getSingleProduct(Model model, @RequestParam("id") Optional<Integer> idOptional) {
+        if (idOptional.isPresent()) {
+            // Fetch product details using the ID
+            int id = idOptional.get();
+            Product product = productService.getProductById(id);
+            model.addAttribute("product", product);
+        } else {
+            // Handle the case where no ID is provided
+            model.addAttribute("error", "Product ID is required");
+        }
+        return "client/product/detail";
+    }
 
 }

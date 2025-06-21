@@ -4,7 +4,6 @@ import com.phamtra.laptopshop.domain.Product;
 import com.phamtra.laptopshop.service.ProductService;
 import com.phamtra.laptopshop.service.UploadService;
 import jakarta.validation.Valid;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,56 +14,117 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/admin/product")
 public class ProductController {
 
     private final ProductService productService;
     private final UploadService uploadService;
-    private final PasswordEncoder passwordEncoder;
 
-    public ProductController(ProductService productService, UploadService uploadService, PasswordEncoder passwordEncoder) {
+    public ProductController(ProductService productService, UploadService uploadService) {
         this.productService = productService;
         this.uploadService = uploadService;
-        this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/admin/product")
-    public String getProduct(Model model) {
-        List<Product> prs = this.productService.fetchProducts();
-        model.addAttribute("products", prs);
-        return "admin/product/show";
+    // Hiển thị danh sách sản phẩm
+    @GetMapping
+    public String listProducts(Model model) {
+        model.addAttribute("products", productService.fetchProducts());
+        return "admin/product/show"; // Trang hiển thị danh sách sản phẩm
     }
 
-    @GetMapping("/admin/product/create")
-    public String getCreateProductPage(Model model) {
+    // Hiển thị form tạo sản phẩm
+    @GetMapping("/create")
+    public String createProductForm(Model model) {
         model.addAttribute("newProduct", new Product());
-        return "admin/product/create";
+        return "admin/product/create"; // Trang tạo sản phẩm
     }
 
-    @PostMapping(value = "/admin/product/create")
-    public String handleCreateProduct(@ModelAttribute("newProduct") @Valid Product pr,
-                                      BindingResult newProductBindingResult,
-                                      @RequestParam("phamtraFile")MultipartFile file) {
+    // Xử lý tạo sản phẩm
+    @PostMapping("/create")
+    public String createProduct(@ModelAttribute("newProduct") @Valid Product product,
+                                BindingResult bindingResult,
+                                @RequestParam("phamtraFile") MultipartFile file) {
 
-        if (newProductBindingResult.hasErrors()) {
-            return "/admin/product/create";
+        // Kiểm tra lỗi validation
+        if (bindingResult.hasErrors()) {
+            return "admin/product/create";
         }
-        //upload image
-        String image = this.uploadService.handleSaveUploadFile(file, "product");
-        pr.setImage(image);
-        this.productService.handleSaveProduct(pr);
-        return "redirect:/admin/product";
+
+        // Xử lý upload ảnh
+        if (!file.isEmpty()) {
+            String image = uploadService.handleSaveUploadFile(file, "product");
+            product.setImage(image);
+        }
+
+        // Lưu sản phẩm vào database
+        productService.handleSaveProduct(product);
+        return "redirect:/admin/product"; // Chuyển hướng về danh sách sản phẩm
     }
 
-    @GetMapping("/admin/product/{id}")
-    public String getDetailProductPage(Model model, @PathVariable long id) {
-        Product pr = this.productService.fetchProductById(id).get();
-        model.addAttribute("product", pr);
-        model.addAttribute("id", id);
-        return "/admin/product/detail";
+    // Hiển thị chi tiết sản phẩm
+    @GetMapping("/{id}")
+    public String viewProductDetails(@PathVariable long id, Model model) {
+        Optional<Product> product = productService.fetchProductById(id);
+        if (product.isEmpty()) {
+            model.addAttribute("error", "Product not found!");
+            return "error/404"; // Trang báo lỗi nếu sản phẩm không tồn tại
+        }
+        model.addAttribute("product", product.get());
+        return "admin/product/detail"; // Trang chi tiết sản phẩm
     }
 
+    // Hiển thị form cập nhật sản phẩm
+    @GetMapping("/update/{id}")
+    public String updateProductForm(@PathVariable long id, Model model) {
+        Optional<Product> product = productService.fetchProductById(id);
+        if (product.isEmpty()) {
+            model.addAttribute("error", "Product not found!");
+            return "error/404"; // Trang báo lỗi nếu sản phẩm không tồn tại
+        }
+        model.addAttribute("newProduct", product.get());
+        return "admin/product/update"; // Trang cập nhật sản phẩm
+    }
 
-    @GetMapping("/admin/product/delete/{id}")
+    // Xử lý cập nhật sản phẩm
+    @PostMapping("/update")
+    public String updateProduct(@ModelAttribute("newProduct") @Valid Product product,
+                                BindingResult bindingResult,
+                                @RequestParam("phamtraFile") MultipartFile file) {
+
+        // Kiểm tra lỗi validation
+        if (bindingResult.hasErrors()) {
+            return "admin/product/update";
+        }
+
+        // Lấy sản phẩm hiện tại từ database
+        Optional<Product> optionalProduct = productService.fetchProductById(product.getId());
+        if (optionalProduct.isEmpty()) {
+            return "redirect:/admin/product?error=notfound";
+        }
+
+        Product currentProduct = optionalProduct.get();
+
+        // Cập nhật ảnh nếu có upload mới
+        if (!file.isEmpty()) {
+            String image = uploadService.handleSaveUploadFile(file, "product");
+            currentProduct.setImage(image);
+        }
+
+        // Cập nhật các thuộc tính còn lại
+        currentProduct.setName(product.getName());
+        currentProduct.setPrice(product.getPrice());
+        currentProduct.setQuantity(product.getQuantity());
+        currentProduct.setShortDesc(product.getShortDesc());
+        currentProduct.setDetailDesc(product.getDetailDesc());
+        currentProduct.setFactory(product.getFactory());
+        currentProduct.setTarget(product.getTarget());
+
+        // Lưu thay đổi vào database
+        productService.createProduct(currentProduct);
+        return "redirect:/admin/product"; // Chuyển hướng về danh sách sản phẩm
+    }
+
+    @GetMapping("/delete/{id}")
     public String getDeleteProductPage(Model model, @PathVariable long id) {
         model.addAttribute("id", id);
         // User user = new User();
@@ -73,57 +133,32 @@ public class ProductController {
         return "admin/product/delete";
     }
 
-    @PostMapping("/admin/product/delete") // get
-    public String postDeleteProductPage(Model model, @ModelAttribute("newProduct") Product product) {
-        this.productService.deleteProduct(product.getId());
+    @PostMapping("/delete")
+    public String deleteProduct(@ModelAttribute("newProduct") Product product) {
+        // Lấy ID từ đối tượng product
+        long id = product.getId();
+
+        // Gọi service để xóa sản phẩm
+        productService.deleteProduct(id);
+
+        // Chuyển hướng về trang danh sách sản phẩm
         return "redirect:/admin/product";
     }
 
-    @GetMapping("/admin/product/update/{id}")
-    public String getUpdateProductPage(Model model, @PathVariable long id) {
-        Optional<Product> currentProduct = this.productService.fetchProductById(id);
-        model.addAttribute("newProduct", currentProduct.get());
-        return "/admin/product/update";
-    }
+//    @GetMapping("/delete/{id}")
+//    public String deleteProduct(@PathVariable("id") long id) {
+//        productService.deleteProduct(id); // Gọi service để xóa sản phẩm
+//        return "admin/product/delete"; // Chuyển hướng về trang danh sách sản phẩm
+//    }
 
-    @PostMapping("/admin/product/update")
-    public String handleUpdateProduct(@ModelAttribute("newProduct") @Valid Product pr,
-                                      BindingResult newProductBindingResult,
-                                      @RequestParam("phamtraFile") MultipartFile file) {
-        // validate dữ liệu
-        if (newProductBindingResult.hasErrors()) {
-            return "/admin/product/update";
-        }
-
-        Optional<Product> optionalProduct = this.productService.fetchProductById(pr.getId());
-        if (optionalProduct.isEmpty()) {
-            // Có thể redirect về trang báo lỗi hoặc hiển thị lỗi cụ thể
-            return "redirect:/admin/product?error=notfound";
-        }
-
-        Product currentProduct = optionalProduct.get();
-
-        // update image nếu có upload mới
-        if (!file.isEmpty()) {
-            String img = this.uploadService.handleSaveUploadFile(file, "product");
-            currentProduct.setImage(img);
-        }
-
-        // update các thuộc tính còn lại
-        currentProduct.setName(pr.getName());
-        currentProduct.setPrice(pr.getPrice());
-        currentProduct.setQuantity(pr.getQuantity());
-        currentProduct.setDetailDesc(pr.getDetailDesc());
-        currentProduct.setShortDesc(pr.getShortDesc());
-        currentProduct.setFactory(pr.getFactory());
-        currentProduct.setTarget(pr.getTarget());
-
-        this.productService.createProduct(currentProduct);
-
-        return "redirect:/admin/product";
-    }
+//    @GetMapping
+//    public String getAllProducts(Model model) {
+//        // Lấy danh sách sản phẩm từ service
+//        List<Product> products = productService.getAllProducts();
+//        model.addAttribute("products", products);
+//
+//        // Trả về tên view (JSP, Thymeleaf, v.v.)
+//        return "product-list";
+//    }
 
 }
-
-
-
