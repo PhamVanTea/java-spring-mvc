@@ -33,7 +33,7 @@ Cho phép người dùng tìm kiếm sản phẩm theo tên hoặc danh mục.
 
 1. Clone dự án từ GitHub
    
-git clone https://github.com/PhamVanTea/java-spring-mvc.git
+git clone https://github.com/phamtradev/java-spring-mvc.git
 
 cd java-spring-mvc
 
